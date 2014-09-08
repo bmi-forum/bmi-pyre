@@ -29,14 +29,9 @@
 ##
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def_lib = SnacBMI
+def_bin = SnacBMI_irf
 
 def_srcs = \
-	bmi_impl.c
-
-def_hdrs = \
-	bmi.h
+	irf_test.c
 
 def_libs =
-
-def_sub = testing
