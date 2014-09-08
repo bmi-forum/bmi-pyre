@@ -106,7 +106,7 @@
 		<param name="remeshCondition"> off </param>
 	-->
 	<param name="remeshCondition"> onTimeStep </param>
-	<param name="remeshTimeStepCriterion"> 7 </param>
+	<param name="remeshTimeStepCriterion"> 70000000 </param>
 	<param name="remeshLengthCriterion"> 0.7 </param>
 	<param name="bottomRestore"> on </param>
 	

@@ -71,7 +71,7 @@ int
 BMI_Initialize (const char *config_file, BMI_Model ** handle)
 {
 
-    BMI_Model          self;
+    BMI_Model          *self;
 
 	MPI_Comm           CommWorld;
 	int                rank;
@@ -82,6 +82,8 @@ BMI_Initialize (const char *config_file, BMI_Model ** handle)
     if (!handle)
         return BMI_FAILURE;
     
+    self = malloc( sizeof(BMI_Model) );
+
 	/* Initialise MPI, get world info */
 	/* MPI_Init( &argc, &argv ); */
 	MPI_Init( NULL, NULL );
@@ -125,39 +127,38 @@ BMI_Initialize (const char *config_file, BMI_Model ** handle)
 	
 	/* Create the dictionary, and some fixed values */
     /* Hardwirred to the one-processor scenario for now. */
-	self.dictionary = Dictionary_New();
-	Dictionary_Add( self.dictionary, "rank", Dictionary_Entry_Value_FromUnsignedInt( 0 ) );
-	Dictionary_Add( self.dictionary, "numProcessors", Dictionary_Entry_Value_FromUnsignedInt( 1 ) );
+	self->dictionary = Dictionary_New();
+	Dictionary_Add( self->dictionary, "rank", Dictionary_Entry_Value_FromUnsignedInt( 0 ) );
+	Dictionary_Add( self->dictionary, "numProcessors", Dictionary_Entry_Value_FromUnsignedInt( 1 ) );
 	
 	/* Read input */
-	self.ioHandler = XML_IO_Handler_New();
+	self->ioHandler = XML_IO_Handler_New();
     filename = strdup( config_file );
-	if ( False == IO_Handler_ReadAllFromFile( self.ioHandler, filename, self.dictionary ) )
+	if ( False == IO_Handler_ReadAllFromFile( self->ioHandler, filename, self->dictionary ) )
         {
             fprintf( stderr, "Error: Snac couldn't find specified input file %s. Exiting.\n", filename );
             exit( EXIT_FAILURE );
         }
-	Journal_ReadFromDictionary( self.dictionary );
+	Journal_ReadFromDictionary( self->dictionary );
     free( filename );
     
     /* This is the handle to the SNAC's model data. */
-	self.snacContext = Snac_Context_New( 0.0f, 0.0f, sizeof(Snac_Node), sizeof(Snac_Element), CommWorld, self.dictionary );
-	if( rank == procToWatch ) Dictionary_PrintConcise( self.dictionary, self.snacContext->verbose );
+	self->snacContext = Snac_Context_New( 0.0f, 0.0f, sizeof(Snac_Node), sizeof(Snac_Element), CommWorld, self->dictionary );
+	if( rank == procToWatch ) Dictionary_PrintConcise( self->dictionary, self->snacContext->verbose );
     
 	/* Construction phase -----------------------------------------------------------------------------------------------*/
-	Stg_Component_Construct( self.snacContext, 0 /* dummy */, &(self.snacContext), True );
+	Stg_Component_Construct( self->snacContext, 0 /* dummy */, &(self->snacContext), True );
 	
 	/* Building phase ---------------------------------------------------------------------------------------------------*/
-	Stg_Component_Build( self.snacContext, 0 /* dummy */, False );
+	Stg_Component_Build( self->snacContext, 0 /* dummy */, False );
 	
 	/* Initialisaton phase ----------------------------------------------------------------------------------------------*/
-	Stg_Component_Initialise( self.snacContext, 0 /* dummy */, False );
-	if( rank == procToWatch ) Context_PrintConcise( self.snacContext, self.snacContext->verbose );
-
+	Stg_Component_Initialise( self->snacContext, 0 /* dummy */, False );
+	if( rank == procToWatch ) Context_PrintConcise( self->snacContext, self->snacContext->verbose );
 
     /* pass the pointer to Snac_Context to handle */
-    *handle = &self;
-    
+    *handle = self;
+   
     return BMI_SUCCESS;
 }
 
