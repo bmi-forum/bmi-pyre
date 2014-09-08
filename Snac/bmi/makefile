@@ -37,9 +37,15 @@ include ${PROJ_ROOT}/Makefile.system
 
 include Makefile.def
 
-bin = ${def_bin}
+#bin = ${def_bin}
+lib = ${def_lib}
+libstatic = yes
+libdynamic = yes
+includes = ${def_inc}
 
 SRCS = ${def_srcs}
+
+HDRS = ${def_hdrs}
 
 PROJ_LIBS = ${def_libs}
 EXTERNAL_LIBS = -L${STGERMAIN_LIBDIR}  -L${LIB_DIR} -lSnac -lStGermainFD -lStGermain -lStGermainBase -lStGermainDiscretisation ${EXPORT_DYNAMIC_LFLAGS}
