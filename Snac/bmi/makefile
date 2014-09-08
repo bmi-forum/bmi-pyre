@@ -37,7 +37,8 @@ include ${PROJ_ROOT}/Makefile.system
 
 include Makefile.def
 
-#bin = ${def_bin}
+subdirs = ${def_sub}
+
 lib = ${def_lib}
 libstatic = yes
 libdynamic = yes
@@ -54,3 +55,4 @@ EXTERNAL_INCLUDES = -I${STGERMAIN_INCDIR}/StGermain -I${STGERMAIN_INCDIR} -DMODU
 packages = STGERMAIN MPI XML MATH DL
 
 include ${PROJ_ROOT}/Makefile.vmake
+
