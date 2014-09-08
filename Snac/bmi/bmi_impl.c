@@ -65,7 +65,7 @@ struct _BMI_Model {
 	XML_IO_Handler*    ioHandler;
 	Snac_Context*      snacContext;
 
-}
+};
 
 int
 BMI_Initialize (const char *config_file, BMI_Model ** handle)
@@ -156,7 +156,7 @@ BMI_Initialize (const char *config_file, BMI_Model ** handle)
 
 
     /* pass the pointer to Snac_Context to handle */
-    *handle = self;
+    *handle = &self;
     
     return BMI_SUCCESS;
 }
