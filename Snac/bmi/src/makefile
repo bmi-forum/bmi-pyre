@@ -25,9 +25,34 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 ##
-## $Id: Makefile.def 2342 2004-11-19 07:16:48Z SteveQuenette $
+## $Id: makefile 3049 2005-06-22 07:46:15Z AlanLo $
 ##
 ##~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def_sub = src tests
+# obtain defaults for required variables according to system and project location, and then run the build.
+ifndef PROJ_ROOT
+	PROJ_ROOT=../..
+endif
+include ${PROJ_ROOT}/Makefile.system
+
+include Makefile.def
+
+subdirs = ${def_sub}
+
+lib = ${def_lib}
+libstatic = yes
+libdynamic = yes
+includes = ${def_inc}
+
+SRCS = ${def_srcs}
+
+HDRS = ${def_hdrs}
+
+PROJ_LIBS = ${def_libs}
+EXTERNAL_LIBS = -L${STGERMAIN_LIBDIR}  -L${LIB_DIR} -lSnac -lStGermainFD -lStGermain -lStGermainBase -lStGermainDiscretisation ${EXPORT_DYNAMIC_LFLAGS}
+EXTERNAL_INCLUDES = -I${STGERMAIN_INCDIR}/StGermain -I${STGERMAIN_INCDIR} -DMODULE_EXT=\"${MODULE_EXT}\"
+
+packages = STGERMAIN MPI XML MATH DL
+
+include ${PROJ_ROOT}/Makefile.vmake
 
