@@ -58,7 +58,6 @@ struct _Element {
 	struct { __Snac_Element };
 };
 
-/*struct __BMI_Model { __Snac_Context };*/
 struct _BMI_Model {
 
 	Dictionary*        dictionary;
@@ -85,8 +84,7 @@ BMI_Initialize (const char *config_file, BMI_Model ** handle)
     self = malloc( sizeof(BMI_Model) );
 
 	/* Initialise MPI, get world info */
-	/* MPI_Init( &argc, &argv ); */
-	MPI_Init( NULL, NULL );
+	MPI_Init( NULL, NULL ); 	/* MPI_Init( &argc, &argv ); */
 	MPI_Comm_dup( MPI_COMM_WORLD, &CommWorld );
 	MPI_Comm_size( CommWorld, &numProcessors );
 	MPI_Comm_rank( CommWorld, &rank );
@@ -163,7 +161,7 @@ BMI_Initialize (const char *config_file, BMI_Model ** handle)
 }
 
 
-int BMI_Update (BMI_Model *self)
+int BMI_Run_model (BMI_Model *self)
 {
 
     
@@ -173,27 +171,44 @@ int BMI_Update (BMI_Model *self)
     
     return BMI_SUCCESS;
 }
+/* End: BMI_Run_model */
+
+
+int
+BMI_Update (BMI_Model *self)
+{
+    double dt;
+
+    BMI_Get_time_step( self, &dt );
+
+    self->snacContext->currentTime += dt;
+    AbstractContext_Step( context, dt );
+    self->snacContext->timeStep++;
+
+    return BMI_SUCCESS;
+}
 /* End: BMI_Update */
 
-#if 0
+
 int
 BMI_Update_frac (BMI_Model *self, double f)
 {
-  if (f>0) {
-    double dt;
+    if (f>0) {
+        double dt;
+        
+        BMI_Get_time_step (self, &dt);
 
-    BMI_Get_time_step (self, &dt);
+        self->snacContext->_setDt( self->snacContext, f*dt );
 
-    self->dt = f * dt;
+        BMI_Update (self);
 
-    BMI_Update (self);
-
-    self->dt = dt;
+        self->dt = dt;
   }
 
   return BMI_SUCCESS;
 }
 /* End: BMI_Update_frac */
+
 
 int
 BMI_Update_until (BMI_Model *self, double t)
@@ -219,7 +234,7 @@ BMI_Update_until (BMI_Model *self, double t)
   return BMI_SUCCESS;
 }
 /* End: BMI_Update_until */
-#endif
+
 
 int
 BMI_Finalize (BMI_Model *self)
@@ -249,3 +264,21 @@ BMI_Get_component_name (BMI_Model *self, char * name)
   return BMI_SUCCESS;
 }
 /* End: BMI_Get_component_name */
+
+
+int
+BMI_Get_time_step (BMI_Model *self, double *dt) {
+
+    *dt = AbstractContext_Dt( self->snacContext );
+    
+    return BMI_SUCCESS;
+}
+
+
+int
+BMI_Get_current_time (BMI_Model *self, double *now) {
+
+    *now = self->snacContext->currentTime;
+
+    return BMI_SUCCESS;
+}
