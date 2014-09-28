@@ -43,28 +43,22 @@ main (void)
     {
         int i;
         const int n_steps = 10;
+        const double end_time = 3.1536e7*19.5; /* 19.5 years. */
         double time;
         
+        fprintf (stdout, "\n\nRunning until %d steps...\n", n_steps);
         for (i = 0; i < n_steps; i++)
             {
-                fprintf (stdout, "Running until t = %d... ", i+1);
-                if (BMI_Update (self)==0 && BMI_Get_current_time (self, &time)==0) {
-                    if (fabs (time-(i+1)) < 1e-6)
-                        fprintf (stdout, "PASS\n");
-                    else {
-                        return EXIT_FAILURE;
-                    }
-                }
-                else
+                if (BMI_Update (self)!=0)
                     return EXIT_FAILURE;
             }
         
-        fprintf (stdout, "Running until t = %f... ", 1000.5);
-        if (BMI_Update_until (self, 1000.5)==0 && BMI_Get_current_time (self, &time)==0) {
-            if (fabs (time-1000.5) < 1e-6)
+        fprintf (stdout, "\n\nRunning until t = %.4e (=%f years)...\n", end_time, end_time/3.1536e7);
+        if (BMI_Update_until (self, end_time)==0 && BMI_Get_current_time (self, &time)==0) {
+            if (fabs (time-end_time) < 1e-6)
                 fprintf (stdout, "PASS\n");
             else {
-                fprintf (stdout, "%f\n", time);
+                fprintf (stdout, "%f (= %f years)\n", time, time/3.1536e7);
                 return EXIT_FAILURE;
             }
         }
@@ -75,7 +69,7 @@ main (void)
     /***********************/
     /* Finalization        */
     /***********************/
-    fprintf (stdout, "Finalizing... ");
+    fprintf (stdout, "\n\nFinalizing... ");
     err = BMI_Finalize (self);
     
     if (err)
