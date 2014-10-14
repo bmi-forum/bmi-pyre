@@ -257,14 +257,79 @@ BMI_Finalize (BMI_Model *self)
 /* End: BMI_Finalize */
 
 
+
+/*******************************/
+/* Model information functions */
+/*******************************/
 int
 BMI_Get_component_name (BMI_Model *self, char * name)
 {
-  strncpy (name, "Snac model as a BMI component", BMI_MAX_COMPONENT_NAME);
-  return BMI_SUCCESS;
+    strncpy (name, "SNAC", BMI_MAX_COMPONENT_NAME);
+    return BMI_SUCCESS;
 }
-/* End: BMI_Get_component_name */
 
+int BMI_Get_input_var_name_count (BMI_Model self, int *) {
+
+    return self.dictionary->Dictionary_GetCount( self.dictionary );
+
+}
+
+#if 0
+
+int BMI_Get_output_var_name_count (BMI_Model, int *) {
+
+}
+
+int BMI_Get_input_var_names (BMI_Model *, char **) {
+
+}
+
+int BMI_Get_output_var_names (BMI_Model *, char **) {
+
+}
+
+/**********************************/
+/* Variable information functions */
+/**********************************/
+int BMI_Get_var_type (BMI_Model *, const char *, BMI_Var_type *) {
+
+}
+
+int BMI_Get_var_units (BMI_Model *, const char *, char *) {
+
+}
+
+int BMI_Get_var_rank (BMI_Model *, const char *, int *) {
+
+}
+
+int
+BMI_Get_current_time (BMI_Model *self, double *now) {
+
+    *now = self->snacContext->currentTime;
+
+    return BMI_SUCCESS;
+}
+
+
+int BMI_Get_start_time (BMI_Model *self, double *start_time) {
+
+    *start_time = self->snacContext->currentTime;
+
+    return BMI_SUCCESS;
+}
+
+int BMI_Get_end_time (BMI_Model *self, double *end_time) {
+
+    *end_time = self->snacContext->stopTime;
+
+    return BMI_SUCCESS;
+
+}
+
+int BMI_Get_time_units (BMI_Model *, char *) {
+
+}
 
 int
 BMI_Get_time_step (BMI_Model *self, double *dt) {
@@ -275,10 +340,134 @@ BMI_Get_time_step (BMI_Model *self, double *dt) {
 }
 
 
-int
-BMI_Get_current_time (BMI_Model *self, double *now) {
+/****************************************/
+/* Variable getter and setter functions */
+/****************************************/
+int BMI_Get_double (BMI_Model *, const char *, double *) {
 
-    *now = self->snacContext->currentTime;
-
-    return BMI_SUCCESS;
 }
+
+int BMI_Get_double_ptr (BMI_Model *, const char *, double **) {
+
+}
+
+int BMI_Get_double_at_indices (BMI_Model *, const char *, double *, int *, int) {
+
+}
+
+int BMI_Set_double (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Set_double_ptr (BMI_Model *, const char *, double **) {
+
+}
+
+int BMI_Set_double_at_indices (BMI_Model *, const char *, int *, int, double *) {
+
+}
+
+/******************************/
+/* Grid information functions */
+/******************************/
+int BMI_Get_grid_shape (BMI_Model *, const char *, int *) {
+
+}
+
+int BMI_Get_grid_spacing (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Get_grid_origin (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Get_grid_x (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Get_grid_y (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Get_grid_z (BMI_Model *, const char *, double *) {
+
+}
+
+int BMI_Get_grid_cell_count (BMI_Model *, const char *, int *) {
+
+}
+
+int BMI_Get_grid_point_count (BMI_Model *, const char *, int *) {
+
+}
+
+int BMI_Get_grid_vertex_count (BMI_Model *, const char *, int *) {
+
+}
+
+int BMI_Get_grid_connectivity (BMI_Model *, const char *, int *) {
+
+}
+
+int BMI_Get_grid_offset (BMI_Model *, const char *, int *) {
+
+}
+
+/**************************************************************************/
+/* Assumes arrays start at 0, and have contiguous elements (unit stride). */
+/**************************************************************************/
+double BMI_Get_0d_double (BMI_Model *, const char *);
+double *BMI_Get_1d_double (BMI_Model *, const char *, int [1]);
+double *BMI_Get_2d_double (BMI_Model *, const char *, int [2]);
+double *BMI_Get_3d_double (BMI_Model *, const char *, int [3]);
+double *BMI_Get_1d_double_at_indices (BMI_Model *, const char *, int *,
+    int , double *);
+double *BMI_Get_2d_double_at_indices (BMI_Model *, const char *, int *, int);
+// A more general getter
+//double *BMI_Get_double (BMI_Model *, const char *, int *, int **);
+
+void BMI_Set_0d_double (BMI_Model *, const char *, double);
+void BMI_Set_1d_double (BMI_Model *, const char *, const double *);
+void BMI_Set_2d_double (BMI_Model *, const char *, const double *);
+void BMI_Set_3d_double (BMI_Model *, const char *, const double *);
+void BMI_Set_2d_double_at_indices (BMI_Model *, const char *, int *,
+    const double *, int);
+
+int BMI_Get_0d_int (BMI_Model *, const char *);
+int *BMI_Get_1d_int (BMI_Model *, const char *, int [1]);
+int *BMI_Get_2d_int (BMI_Model *, const char *, int [2]);
+int *BMI_Get_3d_int (BMI_Model *, const char *, int [3]);
+int *BMI_Get_2d_int_at_indices (BMI_Model *, const char *, int *, int);
+
+void BMI_Set_0d_int (BMI_Model *, const char *, int);
+void BMI_Set_1d_int (BMI_Model *, const char *, const int *);
+void BMI_Set_2d_int (BMI_Model *, const char *, const int *);
+void BMI_Set_3d_int (BMI_Model *, const char *, const int *);
+void BMI_Set_2d_int_at_indices (BMI_Model *, const char *, int *,
+    const int *, int);
+
+/*
+int *BMI_Get_grid_dimen (BMI_Model *, const char *, int *);
+double *BMI_Get_grid_res (BMI_Model *, const char *, int *);
+double *BMI_Get_grid_corner (BMI_Model *, const char *, int *);
+ */
+
+/*
+  IElementSet get_Element_Set (BMI_Model *handle);
+  IValueSet get_Value_Set (BMI_Model *handle, char *long_var_name, ITimeStamp);
+*/
+
+// Since these are just wrappers for other BMI functions, I don't
+// think they should be included in the interface definition. They
+// could be CMI functions.
+int BMI_Is_scalar (BMI_Model *, const char *);
+int BMI_Is_vector (BMI_Model *, const char *);
+int BMI_Is_grid (BMI_Model *, const char *);
+int BMI_Has_var (BMI_Model *, const char *);
+
+// However, something that indicates if the grid is raster, or
+// uniform rectilinear would be needed.
+int BMI_Is_raster_grid (BMI_Model *, const char *);
+
+#endif
