@@ -16,6 +16,7 @@ main (void)
     BMI_Model *self = NULL;
     int err = BMI_SUCCESS;
     char name[BMI_MAX_COMPONENT_NAME];
+    char *inputs[BMI_INPUT_VAR_NAME_COUNT];
     
     /***********************/
     /* Initialization      */
@@ -34,6 +35,21 @@ main (void)
 
     BMI_Get_component_name (self, name);
     fprintf (stdout, "%s\n", name);
+
+#if 0
+    /*********************************/
+    /* Print input var names (testing) */
+    /*********************************/
+    {
+        int i;
+        int count;
+        BMI_Get_input_var_name_count( self, &count );
+        fprintf (stdout, "input var count: %d\n", count);
+        for (i = 0; i<BMI_INPUT_VAR_NAME_COUNT; i++)
+            inputs[i] = (char*) malloc (sizeof (char) * BMI_MAX_VAR_NAME);
+        BMI_Get_input_var_names (self, inputs);
+    }
+#endif
 
     /***********************/
     /* Update              */
@@ -54,7 +70,7 @@ main (void)
             }
         
         fprintf (stdout, "\n\nRunning until t = %.4e (=%f years)...\n", end_time, end_time/3.1536e7);
-        if (BMI_Update_until (self, end_time)==0 && BMI_Get_current_time (self, &time)==0) {
+        if (BMI_Update_until (self, end_time)==0 ) { //&& BMI_Get_current_time (self, &time)==0) {
             if (fabs (time-end_time) < 1e-6)
                 fprintf (stdout, "PASS\n");
             else {
