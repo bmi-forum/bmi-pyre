@@ -268,19 +268,42 @@ BMI_Get_component_name (BMI_Model *self, char * name)
     return BMI_SUCCESS;
 }
 
-int BMI_Get_input_var_name_count (BMI_Model self, int *) {
+int
+BMI_Get_input_var_name_count (BMI_Model *self, int * count) {
 
-    return self.dictionary->Dictionary_GetCount( self.dictionary );
+    *count = self->dictionary->count;
+    return BMI_SUCCESS;
+
+}
+
+int
+BMI_Get_input_var_names (BMI_Model *self, char ** names)
+{
+
+  int i;
+  /* for (i=0; i<BMI_INPUT_VAR_NAME_COUNT; i++) { */
+  /*   strncpy (names[i], input_var_names[i], BMI_MAX_VAR_NAME); */
+  /* } */
+
+  printf( "Dictionary:\n" );
+  printf( "\tsize: %u\n", self->dictionary->size );
+  printf( "\tdelta: %u\n", self->dictionary->delta );
+  printf( "\tcount: %u\n", self->dictionary->count );
+  printf( "\tentryPtr[0-%u]: {\n", self->dictionary->count );
+  for( i = 0; i < self->dictionary->count; i++ ) {
+    printf( "\t\t" );
+    Dictionary_Entry_Print( self->dictionary->entryPtr[i], stdout ); 
+    printf( "\n" );
+}
+  printf( "\t}\n" );
+  
+  return BMI_SUCCESS;
 
 }
 
 #if 0
 
 int BMI_Get_output_var_name_count (BMI_Model, int *) {
-
-}
-
-int BMI_Get_input_var_names (BMI_Model *, char **) {
 
 }
 
@@ -291,17 +314,47 @@ int BMI_Get_output_var_names (BMI_Model *, char **) {
 /**********************************/
 /* Variable information functions */
 /**********************************/
-int BMI_Get_var_type (BMI_Model *, const char *, BMI_Var_type *) {
-
+int
+BMI_Get_var_type (BMI_Model *self, const char *long_var_name, BMI_Var_type * type)
+{
+  if (strcasecmp (long_var_name, "surface_elevation") == 0) {
+    *type = BMI_VAR_TYPE_DOUBLE;
+    return BMI_SUCCESS;
+  }
+  else {
+    *type = BMI_VAR_TYPE_UNKNOWN;
+    return BMI_FAILURE;
+  }
 }
+/* End: BMI_Get_var_type */
 
-int BMI_Get_var_units (BMI_Model *, const char *, char *) {
-
+int
+BMI_Get_var_units (BMI_Model *self, const char *long_var_name, char * units)
+{
+  if (strcmp (long_var_name, "surface_elevation") == 0) {
+    strncpy (units, "meter", BMI_MAX_UNITS_NAME);
+    return BMI_SUCCESS;
+  }
+  else {
+    units[0] = '\0';
+    return BMI_FAILURE;
+  }
 }
+/* End: BMI_Get_var_units */
 
-int BMI_Get_var_rank (BMI_Model *, const char *, int *) {
-
+int
+BMI_Get_var_rank (BMI_Model *self, const char *long_var_name, int * rank)
+{
+  if (strcmp (long_var_name, "surface_elevation") == 0) {
+    *rank = 2;
+    return BMI_SUCCESS;
+  }
+  else {
+    *rank = -1;
+    return BMI_FAILURE;
+  }
 }
+/* End: BMI_Get_var_rank */
 
 int
 BMI_Get_current_time (BMI_Model *self, double *now) {

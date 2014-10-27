@@ -62,8 +62,8 @@ int BMI_Run_model (BMI_Model *);
 
 /* Model information functions */
 int BMI_Get_component_name (BMI_Model *, char *);
-int BMI_Get_input_var_name_count (BMI_Model, int *);
-int BMI_Get_output_var_name_count (BMI_Model, int *);
+int BMI_Get_input_var_name_count (BMI_Model *, int *);
+int BMI_Get_output_var_name_count (BMI_Model *, int *);
 int BMI_Get_input_var_names (BMI_Model *, char **);
 int BMI_Get_output_var_names (BMI_Model *, char **);
 
