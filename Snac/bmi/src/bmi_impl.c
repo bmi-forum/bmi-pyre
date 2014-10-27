@@ -281,6 +281,7 @@ BMI_Get_input_var_names (BMI_Model *self, char ** names)
 {
 
   int i;
+  Stream* stream = Journal_Register( InfoStream_Type, Dictionary_Type );;
   /* for (i=0; i<BMI_INPUT_VAR_NAME_COUNT; i++) { */
   /*   strncpy (names[i], input_var_names[i], BMI_MAX_VAR_NAME); */
   /* } */
@@ -292,7 +293,7 @@ BMI_Get_input_var_names (BMI_Model *self, char ** names)
   printf( "\tentryPtr[0-%u]: {\n", self->dictionary->count );
   for( i = 0; i < self->dictionary->count; i++ ) {
     printf( "\t\t" );
-    Dictionary_Entry_Print( self->dictionary->entryPtr[i], stdout ); 
+    Dictionary_Entry_Print( self->dictionary->entryPtr[i], stream ); 
     printf( "\n" );
 }
   printf( "\t}\n" );
@@ -310,6 +311,8 @@ int BMI_Get_output_var_name_count (BMI_Model, int *) {
 int BMI_Get_output_var_names (BMI_Model *, char **) {
 
 }
+#endif
+
 
 /**********************************/
 /* Variable information functions */
@@ -380,16 +383,17 @@ int BMI_Get_end_time (BMI_Model *self, double *end_time) {
 
 }
 
-int BMI_Get_time_units (BMI_Model *, char *) {
-
-}
-
 int
 BMI_Get_time_step (BMI_Model *self, double *dt) {
 
     *dt = AbstractContext_Dt( self->snacContext );
     
     return BMI_SUCCESS;
+}
+
+#if 0
+int BMI_Get_time_units (BMI_Model *, char *) {
+
 }
 
 
