@@ -292,7 +292,7 @@ BMI_Get_input_var_names (BMI_Model *self, char ** names)
   printf( "\tcount: %u\n", self->dictionary->count );
   printf( "\tentryPtr[0-%u]: {\n", self->dictionary->count );
   for( i = 0; i < self->dictionary->count; i++ ) {
-    printf( "\t\t" );
+      printf( "%d/%d \t\t", i, self->dictionary->count );
     Dictionary_Entry_Print( self->dictionary->entryPtr[i], stream ); 
     printf( "\n" );
 }

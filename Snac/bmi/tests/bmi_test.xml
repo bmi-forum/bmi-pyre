@@ -26,7 +26,7 @@
 	
 	<!-- Extension modules -->
 	<!--
-		<param> SnacWinklerForce </param>
+
 		<param> SnacCustomCartesian </param>
 	-->
 	<list name="extensions">
@@ -35,6 +35,7 @@
 		<param> SnacViscoPlastic </param>
 		<param> SnacHydroStaticIC </param>
 		<param> SnacVPSeeds </param>
+		<param> SnacWinklerForce </param>
 	</list>
 	
 	<struct name="mesh">
