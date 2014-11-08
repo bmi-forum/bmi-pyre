@@ -1,0 +1,123 @@
+
+solid or material?
+
+boger_fluid  (constant viscosity elastic)
+
+freely_jointed_chain_model (of rubber elasticity)
+wormlike_chain_model  (of rubber elasticity)
+
+http://wenku.baidu.com/view/0ef42b370b4c2e3f572763e8
+--------------------
+Plastic Models ??  (See FLAC 5.0 docs)
+--------------------
+blinear_strain_hardening_ubiquitous_joint_model
+double_yield_model
+drucker_prager_model  (soft clays, low friction angle)
+hoek_brown_model
+modified_cam_clay_model
+mohr_coulomb_model (or theory)
+    http://en.wikipedia.org/wiki/Mohr–Coulomb_theory
+strain_hardening_model (
+ubiquitous_joint_model (anisotropic, weak planes)
+
+---------------------
+Viscoelastic Models
+---------------------
+generalized_maxwell_model  (or maxwell_wiechert_Model)
+kelvin_voigt_material  (viscoelastic)
+maxwell_material  (viscoelastic)
+
+standard_linear_solid_model  (also called zener_model; viscoelastic)
+
+three_parameter_maxwell_fluid_model (or jeffrey_model) 
+
+---------------------
+Viscoplastic Models
+---------------------
+perzyna_formulation_model
+duvaut_lions_formulaton_model
+------
+bingham_kelvin_model  (all 3 elements in parallel)
+bingham_norton_model  (2 parallel, 1 in series)
+   (elastic_perfectly_viscoplastic_solid; = bingham_maxwell_model)
+norton_hoff_model  (perfectly_viscoplastic_solid)
+
+------
+johnson_cook_model (flow stress model)
+mechanical_threshold_stress_model (flow stress model)
+preston_tonks_wallace_model (flow stress model)
+steinberg_cochran_guinan_lund_model (flow stress model)
+zerilli_armstrong_model  (flow stress model)
+
+arruda_boyce_hyperelastic_solid  (or model?)
+   http://en.wikipedia.org/wiki/Arruda–Boyce_model
+fung_hyperelastic_solid (or model?)
+   http://en.wikipedia.org/wiki/Soft_tissue#Fung-elastic_material
+gent_hyperelastic_solid (or model?)
+   http://en.wikipedia.org/wiki/Gent_(hyperelastic_model)
+marlow_hyperelastic_solid
+mooney_rivlin_solid
+   http://en.wikipedia.org/wiki/Mooney–Rivlin_solid
+neo_hookean_solid   (due to Rivlin)
+    http://en.wikipedia.org/wiki/Neo-Hookean_solid
+ogden_hyperelastic_solid
+    http://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)
+polynomial_hyperelastic_solid = generalized_rivlin_model
+    http://en.wikipedia.org/wiki/Polynomial_(hyperelastic_model)
+   (mooney_rivlin_solid is a special case)
+saint_venant_kirchoff_material (or model?)
+van_der_waals_hyperelastic_model   (also called kilian_hyperelastic_solid)
+yeoh_hyperelastic_model
+   http://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model)
+
+amorphous_material (e.g. gel, glass)  (or noncrystalline_material)
+cauchy_elastic_material = simple_elastic_material
+crystalline_material (or solid)
+elastic_material
+elastoplastic_solid
+elastoviscoplastic_solid
+glass_material  (amorphous solid that exhibits a glass transition)
+hyperelastic_material = green_elastic_material
+     http://en.wikipedia.org/wiki/Hyperelastic_material
+     special case of cauchy_elastic_material
+hypoelastic_material
+    http://en.wikipedia.org/wiki/Hypoelastic_material
+linear_elastic_material
+nonlinear_elastic_material
+semicrystalline_material
+viscoelastic_material
+    http://en.wikipedia.org/wiki/Viscoelasticity
+viscoplastic_material
+plastic_material
+thermoelastic_material
+
+isochoric_flow (= volume preserving)
+
+compressible_material
+homogeneous_material
+incompressible_material
+isotropic_material
+solid_material  (solid_phase)
+
+equibiaxial_extension
+pure_dilation
+simple_shear
+uniaxial_extension
+
+rubbber:
+   nonlinear_elastic_material
+   isotropic_material
+   incompressible_material
+
+----------------------------------------------------
+Elastic Moduli for Homogeneous Isotropic Materials
+----------------------------------------------------
+bulk_modulus (K)
+lame_lambda_parameter  (or first parameter)
+lame_mu_parameter      (or second parameter, or shear modulus)
+poisson_ratio (nu)
+p_wave_moduls (M)
+young_modulus (E)
+
+
+
