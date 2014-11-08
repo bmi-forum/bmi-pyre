@@ -1,0 +1,628 @@
+<model>
+
+<!-- =========================== -->
+<!--  Model Information -->
+<!-- =========================== -->
+<author> Eunseo Choi </author>
+<name> SNAC - StGermaiN Analysis of Continua: Extension of elasto-visco-plastic lithosphere </name>
+
+<grid_type> structured </grid_type>
+<time_step_type> fixed </time_step_type>
+<!--<ellipsoid> none </ellipsoid>-->
+
+<!-- =========================== -->
+<!--  Model Assumptions -->
+<!-- =========================== -->
+
+<!-- which one, conservation or law assumption?-->
+<!-- ===> So, what's the answer? Need both? -->
+<assume> linear_momentum_conserved </assume>
+<!-- ===> Do we need this? <assume> angular_momentum_conserved </assume>-->
+<assume> energy_conserved </assume>
+
+<assume> conservation_of_momentum_law </assume>
+<assume> newton_second_law_of_motion </assume>
+<assume> thermodynamics_first_law </assume>
+<!-- ===> Do we need this? <assume> thermodynamics_second_law </assume>-->
+<assume> diffusion_equation </assume>
+<assume> fourier_law </assume>
+
+<!-- Do we need a new "Named Model-type assumption like below? -->
+<!-- ===> can't think of anything yet. -->
+<!--<assume> kinematic_wave_model </assume>-->
+
+<assume> finite_element_method </assume>
+<assume> cartesian_coordinate_system </assume>
+<assume> quasistatic_process </assume>
+
+<assume> earth_lithosphere </assume>
+
+
+<!-- =========================== -->
+<!--  Object Assumptions -->
+<!-- =========================== -->
+<!-- the count attribute is sufficient to let us know that everything to do with earth materials is an array of this size -->
+<object name='earth_material' count='earth_material__count'>
+    <options type='select_multiple'> 
+        <assume> viscoelastic_fluid </assume>
+        <assume> maxwell_fluid </assume> 
+        <assume> power_law_fluid </assume> 
+        <assume> mohr_coulomb_solid </assume>
+    <!-- looks like we need to create "Solid-Type" and add assumption names like "linear_elastic_solid", "non_linear_elastic_solid", "hypoelastic_solid", "hyperelastic_solid", "elastoplastic_solid", "elastoviscoplastic_solid" etc -->
+    <!-- ===> I agree. What would be a suitable structuring?-->
+    </options>
+    <assume> conservation_of_momentum_law </assume>
+    <assume> newton_second_law_of_motion </assume>
+    <assume> thermodynamics_first_law </assume>
+    <!-- ===> Do we need this? <assume> thermodynamics_second_law </assume>-->
+    <assume> diffusion_equation </assume>
+    <assume> fourier_law </assume>
+</object>
+
+<!--
+decide:
+1) distribution of phases in the domain,
+2) rheology of each rock type,
+3) specify the parameters for each of the rheologies
+-->
+
+<!-- =========================== -->
+<!--  Input Variables -->
+<!-- =========================== -->
+<!--
+for multiple phases, you would want to specify: phase boundaries, and the material
+properties for each of the phases
+-->
+<!---------------------------------------------------------------------------------------->
+
+<!-- Variable group to describe all mantle mineral phases -->
+
+<input_var_group name="earth_material" count="earth_material__count">    
+    <input_var name="earth_material__density"> 
+        <units> kg m-3 </units>
+	<type> float64 </type>
+    </input_var>
+
+    <input_var name="earth_material__thermal_conductivity">
+        <units> ??? </units>
+	<type> float64 </type>
+    </input_var>
+
+    <!-- earth_material__constant_volume_thermal_capacity also exists but not in this code -->
+    <input_var name="earth_material__constant_pressure_thermal_capacity">
+        <units> J kg-1 </units>
+	<type> float64 </type>
+    </input_var>
+
+    <input_var name="earth_material__thermal_expansion_coefficient">
+        <units> K-1 </units>
+	<type> float64 </type>
+    </input_var>
+</input_var_group>
+
+
+<!-- ===> We'll have to call each of the following material models a type of SOLID. 
+For instance, viscoelastic_solid, elastoplastic_solid, or elatoviscoplastic_solid. -->
+
+<!-- ===> What needs to be done for the next unstructured block? -->
+earth_material viscoelastic_fluid
+assume linear_elastic_rheology
+assume power_law_viscosity (special case of non_newtonian_rheology)
+
+earth_material elastovistroplastic_fluid
+assume linear_elastic_rheology
+assume power_law_viscosity
+assume mohr_coulomb_plasticity (special case of plastic_rheology)
+<!-- =========== -->
+
+		<option name="linearelastic_solid">        
+		<option name="viscoelastic_fluid">        
+		<!-- ===> this should be an option for viscoelastic_solid. <option name="maxwell_fluid">-->
+		<option name="elastoplastic_fluid">        
+		<option name="elastovistoplastic_fluid">    
+
+<!---------------------------------------------------------------------------------------->
+
+<!-- Variable groups to describe mantle mineral phases associated with a specific rheology -->
+
+<!-- ===> select_one might be better in the next line. -->
+<option_group type="select_one_or_more" name="rheology" default="linear_elastic_rheology">
+    <option name="linear_elastic_rheology">
+
+ 		<assume> linearelastic_material </assume>
+
+		<input_var name="earth_material__lame_parameters_lambda">
+			<units> Pa </units>
+        </input_var>
+
+        <input_var name="earth_material__shear_modulus"> <-- SYN lame_parameters_mu -->
+            <units> Pa </units>
+        </input_var>
+
+ 	</option>
+
+	<option name="viscoelastic_rheology">
+ 		<assume> viscoelastic_material </assume>
+		<input_var name="earth_material__lame_parameters_lambda">
+			<units> Pa </units>
+        </input_var>
+        <input_var name="earth_material__shear_modulus"> <-- SYN lame_parameters_mu -->
+            <units> Pa </units>
+        </input_var>
+        <!-- ===> We'll probably need the following option group to handle different viscoelastic models. -->
+        <option_group type="select_one" name="maxwell" default="maxwell">
+
+          <option name="maxwell"> <!-- ===> probably not a standard name -->
+
+            <option_group type="select_one" name="viscosity" default="constant">
+              
+              <option name="constant">
+                <input_var name="earth_material__viscosity">
+                  <units> Pa s </units>
+                </input_var>
+              </option>
+              
+              <option name="power_law">
+                <input_var name="earth_material__power_law_viscosity_exponent">
+                  <units>  </units>
+                </input_var>
+                <input_var name="earth_material__power_law_viscosity_preexponential_factor">
+                  <units>  </units>
+                </input_var>
+                <input_var name="earth_material__power_law_viscosity_activation_energy">
+                  <units>  </units>
+                </input_var>
+              </option>
+            </option_group>
+          </option>
+
+          <!-- can be an option but not available yet. -->
+          <!-- <option name="kelvin_voigt">--> <!-- ===> probably not a standard name -->
+          <!-- </option> -->
+          <!-- ========= -->
+
+        </option_group>
+ 	</option>
+
+	<option name="elastoplastic_rheology">
+
+ 		<assume> mohr_coulomb_plasticity </assume>
+
+        <!-- ===> We'll probably need the following option group to handle strain weakening. -->
+        <option_group type="select_one" name="strain_weakening" default="no_weakening">
+
+          <option name="no_weakening">
+            <input_var name="earth_material__friction_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__cohesion">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__tension_cutoff">
+              <units> Pa </units>
+            </input_var>
+          </option>
+
+          <option name="two_step_piecewise_linear_weakening">
+            <input_var name="earth_material__friction_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle">
+              <units> Degree </units>
+            </input_var>
+            <!-- The following weakening path is assumed for friction_angle, dilation_angle, and/or coheion.-->
+            <!--     ^                                   -->
+            <!--  C0 |\                                  -->
+            <!--     | \                                 -->
+            <!--     |  \                                -->
+            <!--  C1 |   \________                       -->
+            <!--     |_____________> internal_variable   -->
+            <!--     |   |       |                       -->
+            <!--     0  i.v.0    i.v.1                   -->
+            <input_var name="earth_material__friction_angle0"> <!-- need better name. -->
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__friction_angle1">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle0">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle1">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__cohesion0">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__cohesion1">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__internal_varialbe0"> <!-- need better name. -->
+              <units> None </units>
+            </input_var>
+            <input_var name="earth_material__internal_variable1">
+              <units> None </units>
+            </input_var>
+            <input_var name="earth_material__tension_cutoff">
+              <units> Pa </units>
+            </input_var>
+          </option>
+
+          <!-- Just as future possibilities -->
+          <!--
+          <option name="three_step_piecewise_linear_weakening">
+          </option>
+          <option name="multi_step_piecewise_linear_weakening">
+          </option>
+          <option name="exponential_piecewise_linear_weakening">
+          </option>
+          -->
+        </option_group>
+ 	</option>
+
+	<option name="elastoplastic_rheology">
+ 		<assume> linearelastic_material </assume>
+ 		<assume> viscoelastic_material </assume>
+ 		<assume> mohr_coulomb_plasticity </assume>
+
+		<input_var name="earth_material__lame_parameters_lambda">
+			<units> Pa </units>
+        </input_var>
+        <input_var name="earth_material__shear_modulus"> <-- SYN lame_parameters_mu -->
+            <units> Pa </units>
+        </input_var>
+
+        <!-- ===> We'll probably need the following option group to handle different viscoelastic models. -->
+        <option_group type="select_one" name="maxwell" default="maxwell">
+
+          <option name="maxwell"> <!-- ===> probably not a standard name -->
+
+            <option_group type="select_one" name="viscosity" default="constant">
+              
+              <option name="constant">
+                <input_var name="earth_material__viscosity">
+                  <units> Pa s </units>
+                </input_var>
+              </option>
+              
+              <option name="power_law">
+                <input_var name="earth_material__power_law_viscosity_exponent">
+                  <units>  </units>
+                </input_var>
+                <input_var name="earth_material__power_law_viscosity_preexponential_factor">
+                  <units>  </units>
+                </input_var>
+                <input_var name="earth_material__power_law_viscosity_activation_energy">
+                  <units>  </units>
+                </input_var>
+              </option>
+            </option_group>
+          </option>
+
+          <!-- can be an option but not available yet. -->
+          <!-- <option name="kelvin_voigt">--> <!-- ===> probably not a standard name -->
+          <!-- </option> -->
+          <!-- ========= -->
+        </option_group>
+
+        <!-- ===> We'll probably need the following option group to handle strain weakening. -->
+        <option_group type="select_one" name="strain_weakening" default="no_weakening">
+
+          <option name="no_weakening">
+            <input_var name="earth_material__friction_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__cohesion">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__tension_cutoff">
+              <units> Pa </units>
+            </input_var>
+          </option>
+
+          <option name="two_step_piecewise_linear_weakening">
+            <input_var name="earth_material__friction_angle">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle">
+              <units> Degree </units>
+            </input_var>
+            <!-- The following weakening path is assumed for friction_angle, dilation_angle, and/or coheion.-->
+            <!--     ^                                   -->
+            <!--  C0 |\                                  -->
+            <!--     | \                                 -->
+            <!--     |  \                                -->
+            <!--  C1 |   \________                       -->
+            <!--     |_____________> internal_variable   -->
+            <!--     |   |       |                       -->
+            <!--     0  i.v.0    i.v.1                   -->
+            <input_var name="earth_material__friction_angle0"> <!-- need better name. -->
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__friction_angle1">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle0">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__dilation_angle1">
+              <units> Degree </units>
+            </input_var>
+            <input_var name="earth_material__cohesion0">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__cohesion1">
+              <units> Pa </units>
+            </input_var>
+            <input_var name="earth_material__internal_varialbe0"> <!-- need better name. -->
+              <units> None </units>
+            </input_var>
+            <input_var name="earth_material__internal_variable1">
+              <units> None </units>
+            </input_var>
+            <input_var name="earth_material__tension_cutoff">
+              <units> Pa </units>
+            </input_var>
+          </option>
+
+          <!-- Just as future possibilities -->
+          <!--
+          <option name="three_step_piecewise_linear_weakening">
+          </option>
+          <option name="multi_step_piecewise_linear_weakening">
+          </option>
+          <option name="exponential_piecewise_linear_weakening">
+          </option>
+          -->
+        </option_group>
+ 	</option>
+
+</option_group> 
+
+<!---------------------------------------------------------------------------------------->
+<!-- if one of these assumptions is chosen for an element of earth_material array, need these variables -->
+
+<input_var_group>
+    <intent> Input parameters for the linear elastic rheology. </intent>
+    <type> float64 </type>
+    <options type='select_single'>
+        <assume> viscoelastic_fluid </assume>
+        <assume> maxwell_fluid </assume>
+        <assume> elastoplastic_solid </assume>
+        <assume> elastoviscoplastic_solid </assume>
+    </options>
+
+    <input_var>
+        <name> earth_material__lame_parameters_lambda </name> <!-- doesn't exist yet! -->
+        <units> Pa </units>
+    </input_var>
+
+    <input_var>
+        <name> earth_material__shear_modulus </name> SYN lame_parameters_mu
+        <units> Pa </units>
+    </input_var>
+</input_var_group>
+
+<!---------------------------------------------------------------------------------------->
+<!-- and this group is only needed if both of these assumptions hold -->
+<!-- this was done quickly and my physics may of course be all wrong! - just keep the idea -->
+
+<input_var_group>
+    <intent> Input parameters for the Maxwell viscoelastic rheology with a power law viscosity. </intent>
+    <type> float64 </type>
+    <options type='select_all'> 
+        <assume> viscoelastic_fluid </assume>
+        <assume> maxwell_fluid </assume>
+    </options>
+
+    <input_var> 
+        <name> earth_material__power_law_viscosity_reference_value </name> <!-- power_law_viscosity assumption doesn't exist yet! -->
+        <units> Pa s </units>
+    </input_var>
+
+    <input_var> 
+        <name> earth_material__power_law_viscosity_reference_temperature </name>
+        <units> K </units>
+    </input_var>
+
+    <input_var>
+        <name> earth_material__power_law_viscosity_activation_energy </name> #### only makes sense for power law
+        <units> J </units>
+    </input_var>
+
+    <input_var>
+        <name> earth_material__power_law_viscosity_domain_min_value </name>
+        <units> Pa s </units>
+    </input_var>
+
+    <input_var> 
+        <name> earth_material__power_law_viscosity_domain_max_value </name>
+        <units> Pa s </units>
+    </input_var>
+
+    <input_var>
+        <name> earth_material__power_law_viscosity_exponent </name> #### only makes sense for power law
+        <units> 1 </units>
+    </input_var>
+</input_var_group>
+
+<!------------------------------------------------------------------------->
+<!-- -->
+
+<input_var_group>
+    <intent> Input parameters for the Mohr-Coulomb plastic component of rheology. </intent>
+    <type> float64 </type>
+    SDP ### <assume> mohr_coulomb_material </assume>  ### Is this only for plasticity? or mohr_coulomb_plastic_material (maybe redundant) or model??
+    SDP ### <assume> plastic_material </assume>  (tentative, or plastic_flow??)
+ 
+    <assume> mohr_coulomb_plastic </assume>
+    <process name='plastic_strain_weakening'>    ##### SDP.  A process would be independent of a model approach.
+        <assume> piecewise_linear_approximation </assume>
+    </process>
+    
+    <!-- this input parameter is replaced with the by the "mohr_coulomb_solid" assumption for the earth_material object. -->
+    <!-- 
+    <input_var> option: if rheology is plastic, this is the yield criterion for a plastic rheology
+        <name> mat0__yieldcriterion </name>
+        <units> 1 </units>
+    </input_var>
+    -->
+    
+    <!--(dynamically allocated arrays) size of number of segments -->
+    <input_var count='piecewise_linear_approximation__number_of_segments'>   ### (number_of_segments -> segment_count)
+        <name> earth_material__mohr_coulomb_plastic_strain_value </name>     ### strain is a base quant., unitless.  CHECK. Don't use value.
+    </input_var>
+
+    <input_var count='piecewise_linear_approximation__number_of_segments'>
+        <name> earth_material__mohr_coulomb_plastic_friction_angle </name>  ### earth_material_plastic__mohr_coulomb_friction_angle
+        <units> deg </units>
+    </input_var>
+
+    <input_var count='piecewise_linear_approximation__number_of_segments'> 
+        <name> earth_material__mohr_coulomb_plastic_dilation_angle </name>
+        <units> deg </units>
+    </input_var>
+
+    <input_var count='piecewise_linear_approximation__number_of_segments'> 
+        <name> earth_material__mohr_coulomb_plastic_cohesion_value </name> ### SDP cohesion_yield_stress ??
+        <units> deg </units>
+    </input_var>
+
+    <input_var> 
+        <name> earth_material__mohr_coulomb_plastic_tension_cutoff </name>
+        ### cutoff not a base quan., maybe cutoff_tension  ### Maybe tension_stress and compression_stress  (tensile_strength or yield_stress)
+        <units> Pa </units>
+    </input_var>
+</input_var_group>
+
+
+<!-- =========================== -->
+<!--  Output Variables -->
+<!-- =========================== -->
+<!--
+grid nodes move around with time
+location and velocity of grid nodes as they change in time
+initially, define the number of node points in each direction & they are regular
+motion driven by boundary conditions: velocity vector on a certain portion of the boundary
+boundaries are: side walls in one direction only; other two are "undetermined"
+at the bottom: "free slip" (could also be "free surface" or "fixed")
+top is "free surface" (could also be "free slip" or "fixed")
+boundary condition are either fixed in time, or time dependent
+internal clock
+earth_material is uniform, single layer
+-->
+
+<!-- NOTE: need a way to specify that a quantity is defined on the grid,
+and where on the grid, e.g., primary_grid_nodes, dual_grid_edges, grid_elements (or cells), etc -->
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__x_component_of_coordinates_of_nodes </name> <!-- the quantity, coordinates_of_nodes, doesn't exist yet. -->
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__y_component_of_coordinates_of_nodes </name>
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__z_component_of_coordinates_of_nodes </name>
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__x_component_of_velocity </name>
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__y_component_of_velocity </name>
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_nodes'> 
+    <name> earth_material__z_component_of_velocity </name>
+    <units> m s-1 </units>
+</output_var>
+
+<output_var location='primary_grid_elements'> 
+    <name> earth_material__temperature </name>
+    <units> ?? </units>
+</output_var>
+
+<output_var location='primary_grid_elements'> 
+    <name> earth_material__density </name>
+    <units> kg m-3 </units>
+</output_var>
+
+<!-- in the code, this is integer at each location, e.g. basalt is phase 0 - assigned to each element (cell) 
+of the finite element grid (lagrangian method)
+however, instead we should perhaps be talking on outputting information like:
+earth_mineral__name
+earth_mineral__proportion
+earth_mineral__chemical_composition
+earth_mineral__equation_of_state, etc
+for each of the integer values that correspond to an earth material, at each grid element -->
+
+<output_var location='primary_grid_elements'>
+    <name> earth_material__phase </name>
+    <units> 1 </units>
+</output_var>
+
+<!--
+Invariants are the coefficients of the characteristic polynomial of the tensor.
+Scalar representation of the deviatoric component of the tensor, represent shear.
+elastic, viscous and plastic strain
+strain tensor different from strain rate tensor
+tensors: stress, strain_rate, strain
+elastic_stress_tensor
+elastic_strain_tensor
+elastic_strain_rate_tensor
+viscous_stress_tensor
+viscous_strain_tensor
+viscous_strain_rate_tensor
+plastic_stress_tensor
+plastic_strain_tensor
+plastic_strain_rate_tensor
+-->
+        <!-- =========================== -->
+        <!--  Output Variables -->
+        <!-- =========================== -->
+
+<output_var> 
+    <name> earth_material__second_invariant_of_deviatoric_stress_tensor </name> <!-- second invariant should be an operation type but doesn't exist yet.-->
+    <units> m s-1 </units>
+</output_var>
+
+<output_var> 
+    <name> earth_material__second_invariant_of_deviatoric_strain_rate_tensor </name> <!-- strain_rate quantity doesn't seem to be a standard name yet. -->
+    <units> m s-1 </units>
+</output_var>
+
+<output_var> 
+    <name> earth_material__second_invariant_of_deviatoric_plastic_strain_tensor </name> <!-- plastic_strain quantity doesn't exist nor does deviatoric_plastic_strain. -->
+    <units> 1 </units>
+</output_var>
+
+<output_var> 
+    <name> earth_material__log10_of_viscosity </name>
+    <units> 1 </units>
+</output_var>
+
+<!-- additional notes about the code interactions at the surface:
+Looking at: extension.
+Topography extracted and given to CHILD
+Change of topography changes gravitational potential, i.e., loading
+(change of coordinates means the load is moved)
+exchange: top node locations and velocities
+-->
+
+</var_group>
+ 
+</model>

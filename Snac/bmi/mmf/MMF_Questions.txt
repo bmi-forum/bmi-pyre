@@ -1,0 +1,114 @@
+
+Questions to figure out about the MMFs:
+
+- *Links to variables* Where do we specify which variable (in the code) corresponds to a given input/output? (Keeping it within the BMI is fine, but then we won't be able to automatically generate it from the MMF - on the other hand, we also don't want to clutter the MMF with variable names, which don't really belong there. Perhaps in a separate file list, then?)
+
+- *Reference variables* How do we define reference input arguments, as distinguished from other inputs (e.g., reference temperature profile, prior conductivity model, etc)? More generally, we need a *purpose* for our inputs/outputs - sometimes just the type is not enough info.
+
+- *Options and assumptions* Oftentimes, specific inputs/outputs only make sense for specific assumptions, or options/choices of running the code - how do we link the two meaningfully?
+
+- *Redundancy* If a physical rule/assumption is specified for the code in general, do we repeat it for each of the variables? Or do we let the processing deal with this?
+
+- *Count* We need the number of input/output objects (not the dimensions), i.e., min/max count allowed - e.g., one conductivity model, but any number of stations.
+
+- *Units* Will these gets converted on the fly, like the grids do?
+
+- *Grids* The system will need to know which grid is being used for each variable, right? - or else, how do we do the conversion?
+
+   ####### SDP.  zone-centered, node-centered, etc. (zonal or nodal ??)
+
+- *Sizes of variables* Finally, many (although not all) inputs/outputs are defined on the grid, or otherwise dynamically allocated in the code. How do we specify what's defined on the grid and what isn't?  What's a scalar, what's a vector, etc?
+
+I am also attaching the standard names, as I have them now, for reference - and a draft MMF file for SNAC with my comments that I was writing up on the go - that invalidate the XML! that's the easiest thing to fix there - also for your quick reference. More specifically, we need to discuss rheology: whether we consider this an assumption or a property, with regards to standard names. This is an important matter since most other properties of earth materials depend on which rheology (or which rheologies!) are assumed.
+
+=======================================================================
+Add to get_attribute() ability to specify that grid varies with time.
+
+What if you call a BMI grid method with a scalar long var name ??
+
+How to specify zonal, nodal or edges, faces, etc.  ???
+
+Centroid, center, edge, etc. are parts of a cell.  Define with assume tags ??
+
+Treat soil layers (vertical) similar to grid cells (discretization) and don't include index.
+Framework will get the whole thing (e.g. 1D array of thicknesses) and then subset as needed.
+Only the framework will access variable names that start with "model".
+
+Check how ESMF regridder handles poles (e.g. virtual north pole).
+
+Treat (seismic section) "reference profile" analogous to MSL_datum or centerline, etc. ??
+Also reference-cross-section ??  (Profile implies 1D, cross-section implies 2D.)
+    seismic-reflection_reference_cross-section__  (What is an example quantity??)
+    channel_cross-section_
+
+If multiple units are supported, include with semi-colons in units tag.
+
+If multiple ranks are supported, include with semi-colons in a new rank tag.
+<input_var>
+    <rank>0, 2</rank>  (in the config file, user chooses scalar or grid for precip rate)
+    how much of grid does it span?? etc.  (time, space, scalar, subset, etc.)
+
+--------------------------
+IDEA:  Have an "option_group" tag, with a type attribute, such as:
+    select_none_or_more
+    select_one_or_more
+    select_one
+    Then add options to a group with an "option" tag, and group all vars, assumptions, grids, etc.
+    that apply to that option.  List these toward the end of the MMF file.
+
+<option_group type="select_one" name="flow_resistance" default="?????">
+    <option name="law_of_the_wall">
+         <assume> law_of_the_wall </assume>
+         <input_var name="long name for z0">
+             <units> m </units>
+         </input_var>
+
+         <output_var>
+    </option>
+
+    <option>
+
+</option_group>
+
+
+Numerical methods:
+Material Point Method (FEM)
+Particle in Cell Method (FEM)
+
+<!---------------------------------------------------------------------------------------->
+<input_var_group>
+    <type> float64 </type>
+    <assume> arakawa_d_grid </assume>
+    <assume> right_hand_rule </assume>
+    
+    <input_var>
+        <name> earth_material__electrical_conductivity </name>
+        <units> siemens m^-1 </units>
+        <assume> defined_in_model_grid_cells </assume>      #######  element vs. cell (CHECK)  ######
+    </input_var>
+
+    <input_var>
+        <name> earth_material__northward_component_of_electric_field_vector </name>
+        <units> volts m^-1 </units>
+        <assume> defined_on_model_grid_edges </assume>
+        <assume> arakawa_u_component </assume>
+    </input_var>
+
+    <input_var>
+        <name> earth_material__eastward_component_of_electric_field_vector </name>
+        <units> volts m^-1 </units>
+        <assume> defined_on_model_grid_edges </assume>
+        <assume> arakawa_v_component </assume>
+    </input_var>    
+
+    <input_var>
+        <name> earth_material__downward_component_of_electric_field_vector </name>
+        <units> volts m^-1 </units>
+        <assume> defined_on_model_grid_edges </assume>
+        <assume> arakawa_w_component </assume>
+    </input_var> 
+        
+</input_var_group>    
+
+
+
