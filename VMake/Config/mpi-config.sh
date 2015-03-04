@@ -162,9 +162,9 @@ esac
 case ${SYSTEM} in
 	Darwin)
 		if test "${STGERMAIN_LIBDIR}x" = "x"; then
-			setValueWithDefault MPI_LIBS   '-L${LIB_DIR} -l${MPI_LIBRARY} -L${MPI_LIBDIR} ${MPI_LIBFILES} -L/sw/lib ${CC_FORTRAN_LFLAGS}'
+			setValueWithDefault MPI_LIBS   '-L${LIB_DIR} -l${MPI_LIBRARY} -L${MPI_LIBDIR} ${MPI_LIBFILES} ${CC_FORTRAN_LFLAGS}'
 		else
-			setValueWithDefault MPI_LIBS   '-L${STGERMAIN_LIBDIR} -l${MPI_LIBRARY} -L${MPI_LIBDIR} ${MPI_LIBFILES} -L/sw/lib ${CC_FORTRAN_LFLAGS}'
+			setValueWithDefault MPI_LIBS   '-L${STGERMAIN_LIBDIR} -l${MPI_LIBRARY} -L${MPI_LIBDIR} ${MPI_LIBFILES} ${CC_FORTRAN_LFLAGS}'
 		fi;;
 	*)
 		setValueWithDefault MPI_LIBS   '-L${MPI_LIBDIR} ${MPI_LIBFILES}';;

@@ -76,9 +76,9 @@ if test -r "${PYTHON_HEADER}" ; then
 	
 	case ${SYSTEM} in
 		CYGWIN)
-			setValueWithDefault PYTHON_STATIC_LIB '${PYTHON_LIBDIR}/config/libpython${PYTHON_VERSION}.dll.a';;
+			setValueWithDefault PYTHON_STATIC_LIB '${PYTHON_MODDIR}/config/libpython${PYTHON_VERSION}.dll.a';;
 		*)
-			setValueWithDefault PYTHON_STATIC_LIB '${PYTHON_LIBDIR}/config/libpython${PYTHON_VERSION}.a';;
+			setValueWithDefault PYTHON_STATIC_LIB '${PYTHON_MODDIR}/config/libpython${PYTHON_VERSION}.a';;
 	esac
 
 	if ! DoCompileConftest ./VMake/Config/python; then
