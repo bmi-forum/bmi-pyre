@@ -49,7 +49,7 @@ export STGERMAIN_VERSION=${VERSION}
 . ./VMake/Config/math-config.sh
 . ./VMake/Config/xml-config.sh
 . ./VMake/Config/mpi-config.sh
-##. ./VMake/Config/python-config.sh --optional
+. ./VMake/Config/python-config.sh --optional
 ##. ./VMake/Config/PETSc-config.sh --optional
 ##. ./VMake/Config/OpenGl-config.sh
 ##. ./VMake/Config/sdl-config.sh

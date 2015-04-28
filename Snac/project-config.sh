@@ -54,5 +54,5 @@ setValue PROJECT 'Snac'
 . ./VMake/Config/xml-config.sh
 . ./VMake/Config/StGermain-config.sh
 ## . ./VMake/Config/gsl-config.sh
-## . ./VMake/Config/python-config.sh --optional
+. ./VMake/Config/python-config.sh --optional
 
