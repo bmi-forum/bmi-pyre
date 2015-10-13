@@ -40,7 +40,7 @@ SRCS = ${def_srcs}
 HDRS = ${def_hdrs}
 
 EXTERNAL_INCLUDES = -I${INC_DIR}/StGermain -I${MPI_INCDIR} ${XML_CFLAGS}
-EXTERNAL_LIBS = -L${LIB_DIR} -lStGermainDiscretisationShape -lStGermainDiscretisationGeometry ${RPATH_LFLAGS}
+EXTERNAL_LIBS = -L${LIB_DIR} -lStGermainDiscretisationShape -lStGermainDiscretisationGeometry ${RPATH_LFLAGS} ${XML_LIBS}
 
 # obtain defaults for required variables according to system and project location, and then run the build.
 ifndef PROJ_ROOT
