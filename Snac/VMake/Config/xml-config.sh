@@ -20,9 +20,11 @@
 parsePackageConfigOptions $@
 
 # Obtain libxml information
-XML2_CONFIG_DEFAULT=`${WHICH} xml2-config 2> /dev/null`
-if whichFailed "${XML2_CONFIG_DEFAULT}"; then
-	XML2_CONFIG_DEFAULT="/usr/bin/xml2-config"
+if test "${XML2_CONFIG_DEFAULT}x" = "x" ; then
+	XML2_CONFIG_DEFAULT=`${WHICH} xml2-config 2> /dev/null`
+	if whichFailed "${XML2_CONFIG_DEFAULT}"; then
+		XML2_CONFIG_DEFAULT="/usr/bin/xml2-config"
+	fi
 fi
 setValueWithDefault XML2_CONFIG "${XML2_CONFIG_DEFAULT}"
 assertValidExecutable "${XML2_CONFIG}" xml2-config
