@@ -27,6 +27,7 @@ nobase_pkgpyexec_PYTHON = \
 lib_LTLIBRARIES = lib_mpimodule.la
 subpkgpyexec_LTLIBRARIES = _mpimodule.la
 subpkginclude_HEADERS = \
+	mpimodule/pympi.h \
 	mpimodule/Communicator.h \
 	mpimodule/Group.h
 lib_mpimodule_la_SOURCES = \

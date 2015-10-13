@@ -329,6 +329,10 @@ void createBarycenterGrids( void* _context )
 	Element_LocalIndex		element_lI;
 	Element_DomainIndex		element_dI;
 	double					tempBC[mesh->elementDomainCount][3];
+	Element_DomainIndex		elgI,elgJ,elgK; 
+	Element_GlobalIndex		nelgI =  decomp->elementGlobal3DCounts[0];
+	Element_GlobalIndex		nelgJ =  decomp->elementGlobal3DCounts[1];
+	Element_GlobalIndex		nelgK =  decomp->elementGlobal3DCounts[2];
 
 	/* Loop over the new elements. */
 	for( element_lI = 0; element_lI < mesh->elementLocalCount; element_lI++ ) {
