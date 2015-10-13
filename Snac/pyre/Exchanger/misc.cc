@@ -36,8 +36,8 @@
 #include <algorithm>
 #include <iostream>
 #include <fstream>
+#include <mpi.h>
 extern "C" {
-	#include <mpi.h>
 	#include <StGermain/StGermain.h>
 	#include <StGermain/FD/FD.h>
 	#include <Snac/Snac.h>
