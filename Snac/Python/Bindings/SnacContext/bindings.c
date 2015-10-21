@@ -58,17 +58,19 @@ struct _Element {
 char Snac_Context_Python_New__doc__[] = "Create a new Snac_Context";
 char Snac_Context_Python_New__name__[] = "New";
 PyObject* Snac_Context_Python_New( PyObject* self, PyObject* args ) {
-	PyObject*	pyDictionary;
+	PyObject	*pyDictionary = NULL;
+	PyObject	*pyComm = NULL;
 	Dictionary*	dictionary;
 	MPI_Comm	communicator;
 	Dictionary_Entry_Value* rankEntry;
 	Dictionary_Entry_Value* numProcEntry;
 	
 	/* Obtain arguements */
-	if( !PyArg_ParseTuple( args, "Oi:", &pyDictionary, &communicator ) ) {
+	if( !PyArg_ParseTuple( args, "OO:", &pyDictionary, &pyComm ) ) {
 		return NULL;
 	}
 	dictionary = (Dictionary*)( PyCObject_AsVoidPtr( pyDictionary ) );
+	communicator = (MPI_Comm *)( PyCObject_AsVoidPtr( pyComm ) );
 
 	/* MPI Stuff */
 	if ( NULL == (rankEntry = Dictionary_Get( dictionary, "rank" ) ) ) {
@@ -76,6 +78,7 @@ PyObject* Snac_Context_Python_New( PyObject* self, PyObject* args ) {
 		MPI_Comm_rank( communicator, &rank );
 		dictionary->add( dictionary, "rank", Dictionary_Entry_Value_FromUnsignedInt( rank ) );
 	}
+
 	if ( NULL == ( numProcEntry = Dictionary_Get( dictionary, "numProcessors" )) ) {
 		int numProcessors = 1;
 		MPI_Comm_size( communicator, &numProcessors );
