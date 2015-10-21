@@ -1,0 +1,12 @@
+Exchanger NEWS -- history of user-visible changes.
+
+Version 1.0.1  2009-06-04
+
+* Improved compliance with C++ standard.
+
+* Fixed potential memory leaks.
+
+
+Version 1.0.0   2007-09-18
+
+* Initial release.

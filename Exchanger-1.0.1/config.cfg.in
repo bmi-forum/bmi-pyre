@@ -1,0 +1,10 @@
+
+[DEFAULT]
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+includedir = @includedir@
+libdir = @libdir@
+
+[flags]
+CPPFLAGS = -I%(includedir)s
+LDFLAGS = -L%(libdir)s -lExchanger
