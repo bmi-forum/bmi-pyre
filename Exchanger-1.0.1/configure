@@ -2759,9 +2759,8 @@ cit_save_PYTHONPATH="$PYTHONPATH"
 PYTHONPATH="$cit_builddir/python:$PYTHONPATH"; export PYTHONPATH
 cd $srcdir
 
-{ echo "$as_me:$LINENO: downloading missing Python dependencies" >&5
-echo "$as_me: downloading missing Python dependencies" >&6;}
-echo "$PYTHON setup.py install_deps -f $cit_builddir/deps -zmxd $cit_builddir/deps"
+#{ echo "$as_me:$LINENO: downloading missing Python dependencies" >&5
+#echo "$as_me: downloading missing Python dependencies" >&6;}
 #if { ac_try='$PYTHON setup.py install_deps -f $cit_builddir/deps -zmxd $cit_builddir/deps >&5 2>&5'
 #  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
 #  (eval $ac_try) 2>&5
@@ -2778,9 +2777,8 @@ echo "$PYTHON setup.py install_deps -f $cit_builddir/deps -zmxd $cit_builddir/de
 #fi
 
 
-{ echo "$as_me:$LINENO: building Python dependencies" >&5
-echo "$as_me: building Python dependencies" >&6;}
-echo "$PYTHON setup.py develop -H None -f $cit_builddir/deps -x -d $cit_builddir/python" 
+#{ echo "$as_me:$LINENO: building Python dependencies" >&5
+#echo "$as_me: building Python dependencies" >&6;}
 #if { ac_try='$PYTHON setup.py develop -H None -f $cit_builddir/deps -x -d $cit_builddir/python >&5 2>&5'
 #  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
 #  (eval $ac_try) 2>&5
@@ -2797,9 +2795,10 @@ echo "$PYTHON setup.py develop -H None -f $cit_builddir/deps -x -d $cit_builddir
 #fi
 
 
-{ echo "$as_me:$LINENO: checking for egg-related flags" >&5
-echo $ECHO_N "checking for egg-related flags... $ECHO_C" >&6; }
-echo "$PYTHON setup.py egg_flags"
+#
+#
+#{ echo "$as_me:$LINENO: checking for egg-related flags" >&5
+#echo $ECHO_N "checking for egg-related flags... $ECHO_C" >&6; }
 #if { ac_try='$PYTHON setup.py egg_flags >&5 2>&5'
 #  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
 #  (eval $ac_try) 2>&5
@@ -2817,7 +2816,7 @@ echo "$PYTHON setup.py egg_flags"
 #      { { echo "$as_me:$LINENO: error: cannot scan Python eggs for flags
 #See \`config.log' for more details." >&5
 #echo "$as_me: error: cannot scan Python eggs for flags
-##See \`config.log' for more details." >&2;}
+#See \`config.log' for more details." >&2;}
 #   { (exit 1); exit 1; }; }
 #fi
 
