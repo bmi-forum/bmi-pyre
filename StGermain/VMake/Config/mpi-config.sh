@@ -37,7 +37,7 @@ case ${SYSTEM} in
 		fi;;
 esac
 setValueWithDefault MPI_BINDIR   '${MPI_DIR}/bin'
-setValueWithDefault MPI_LIBDIR   '${MPI_DIR}/lib/shared'
+setValueWithDefault MPI_LIBDIR   '${MPI_DIR}/lib'
 setValueWithDefault MPI_INCDIR   '${MPI_DIR}/include'
 if test ! "${CC}x" = "mpiccx"; then
 	setValueWithDefault MPI_INCLUDES '-I${MPI_INCDIR}'

@@ -15,7 +15,7 @@
 	
 	<struct name="mesh">
  		<param name="buildNodeNeighbourTbl"> True </param>
-	</list>
+	</struct>
 
 	<!-- node ICs -->
 	<struct name="nodeICs">

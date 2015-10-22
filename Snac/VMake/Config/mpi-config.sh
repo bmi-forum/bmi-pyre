@@ -38,7 +38,7 @@ case ${SYSTEM} in
 esac
 setValueWithDefault MPI_BINDIR   '${MPI_DIR}/bin'
 if test "${SYSTEM}x" = "rangerx"; then
-	setValueWithDefault MPI_LIBDIR   '${MPI_DIR}/lib/shared'
+	setValueWithDefault MPI_LIBDIR   '${MPI_DIR}/lib'
 else
 	setValueWithDefault MPI_LIBDIR   '${MPI_DIR}/lib'
 fi

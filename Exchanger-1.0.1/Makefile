@@ -122,7 +122,7 @@ CPPFLAGS =
 CXX = mpic++
 CXXCPP = mpic++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -I/home/eunseo/projects/snac_bmi/pythia/include/pythia-0.8
+CXXFLAGS = -I/home/eunseo/projects/snac_bmi/pythia/include/pythia-0.8 -fPIC
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
