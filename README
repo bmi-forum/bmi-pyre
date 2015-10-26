@@ -1,4 +1,4 @@
-1. Build SNAC with Pyre
+1. Build SNAC with Pyre on a recent Linux system
 
 1.1 Building Pyre and Exchanger
 
@@ -95,4 +95,7 @@ export PATH=${SNAC_BINDIR}:{$PATH}
 export LD_LIBRARY_PATH=${SNAC_LIBDIR}:{LD_LIBRARY_PATH}
 ======================================================
 
--- For Mac OS X Leopard (and probably Snow Leopard)
+2. Build SNAC with Pyre on OS X
+
+Building SNAC with Pyre support on OS X is still experimental but 
+in principle, the steps described above can be followed.
