@@ -155,7 +155,8 @@ class Solver( BaseSolver ):
 		BaseSolver.endSimulation( self, step, self.t )
 
 		# StGermain stuff
-		self._context.Stg_Class_Delete()
+		#self._context.Stg_Class_Delete()
+		self._context.Delete()
 
 		return
 

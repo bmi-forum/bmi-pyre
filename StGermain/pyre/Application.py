@@ -76,7 +76,6 @@ class Application( mpiApplication ):
 
 	def initialize( self ):
 		self._dictionary.LoadFromFile( self.inventory.inputFilename )
-
 		self.inventory.layout.initialize( self )
 		self.comm = self.inventory.layout.comm
 		self.rank = self.inventory.layout.rank

@@ -32,5 +32,5 @@ case ${SYSTEM} in
 	Darwin)
 		setValueWithDefault MATH_LIBS '-L${MATH_LIBDIR} -lm -lmx';;
 	*)
-		setValueWithDefault MATH_LIBS '-L${MATH_LIBDIR} -lm';;
+		setValueWithDefault MATH_LIBS '-Wl,--no-as-needed -L${MATH_LIBDIR} -lm';;
 esac

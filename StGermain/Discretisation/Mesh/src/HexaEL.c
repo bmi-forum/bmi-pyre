@@ -267,7 +267,7 @@ void _HexaEL_Init( HexaEL* self, Dimension_Index dim, IJK pointSize, IJK element
 		if( dim == 1 )
 			self->pointSize[J_AXIS] = 1;
 	}
-	assert( self->pointSize[0] * self->pointSize[1] * self->pointSize[2] );
+	assert( self->pointSize[0] * self->pointSize[1] * self->pointSize[2] >=2 );
 	
 	if ( elementSize ) {
 		memcpy( self->elementSize, elementSize, sizeof(IJK) );

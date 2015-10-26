@@ -59,18 +59,25 @@ char Snac_Context_Python_New__doc__[] = "Create a new Snac_Context";
 char Snac_Context_Python_New__name__[] = "New";
 PyObject* Snac_Context_Python_New( PyObject* self, PyObject* args ) {
 	PyObject	*pyDictionary = NULL;
-	PyObject	*pyComm = NULL;
 	Dictionary*	dictionary;
 	MPI_Comm	communicator;
 	Dictionary_Entry_Value* rankEntry;
 	Dictionary_Entry_Value* numProcEntry;
 	
 	/* Obtain arguements */
+	if( !PyArg_ParseTuple( args, "Oi:", &pyDictionary, &communicator ) ) {
+		return NULL;
+	}
+	dictionary = (Dictionary*)( PyCObject_AsVoidPtr( pyDictionary ) );
+	/* if OpenMPI */
+#if 0
+	PyObject	*pyComm = NULL;
 	if( !PyArg_ParseTuple( args, "OO:", &pyDictionary, &pyComm ) ) {
 		return NULL;
 	}
 	dictionary = (Dictionary*)( PyCObject_AsVoidPtr( pyDictionary ) );
 	communicator = (MPI_Comm *)( PyCObject_AsVoidPtr( pyComm ) );
+#endif
 
 	/* MPI Stuff */
 	if ( NULL == (rankEntry = Dictionary_Get( dictionary, "rank" ) ) ) {

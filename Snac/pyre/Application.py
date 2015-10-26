@@ -47,7 +47,7 @@ class Application( StGermainApplication ):
 		# move StGermain initialization somewhere before the instantiation of Snac.Application:
 		# e.g. in CoupledApp.py, basic-pyre.py, etc.
 		#StGermain.initialise()
-		self._stgCommunicator = StGermain.pyre.Bindings.pyre.ConvertFromPyreComm( self.solverCommunicator.handle() )
+		self._stgCommunicator = StGermain.pyre.Bindings.pyre.ConvertFromPyreComm( self.solverCommunicator )
 		return Snac.Context.Context( self._dictionary, self._stgCommunicator )
 
 
