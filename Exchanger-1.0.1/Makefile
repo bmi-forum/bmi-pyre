@@ -105,24 +105,24 @@ DIST_ARCHIVES = $(distdir).tar.gz
 GZIP_ENV = --best
 distuninstallcheck_listfiles = find . -type f -print
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run aclocal-1.9
+ACLOCAL = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run aclocal-1.9
 AMDEP_FALSE = #
 AMDEP_TRUE = 
-AMTAR = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run tar
+AMTAR = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run tar
 AR = ar
-AUTOCONF = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run autoconf
-AUTOHEADER = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run autoheader
-AUTOMAKE = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run automake-1.9
+AUTOCONF = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run autoconf
+AUTOHEADER = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run autoheader
+AUTOMAKE = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run automake-1.9
 AWK = mawk
-CC = mpicc
+CC = gcc
 CCDEPMODE = depmode=gcc3
 CFLAGS = -g -O2
-CPP = mpicc -E
+CPP = gcc -E
 CPPFLAGS =   
-CXX = mpic++
-CXXCPP = mpic++ -E
+CXX = mpicxx
+CXXCPP = mpicxx -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -I/home/eunseo/projects/snac_bmi/pythia/include/pythia-0.8 -fPIC
+CXXFLAGS = -fPIC -I/home/eunseo/projects/bmi-pyre/pythia/include/pythia-0.8
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -146,7 +146,7 @@ LIBS =
 LIBTOOL = $(SHELL) $(top_builddir)/libtool
 LN_S = ln -s
 LTLIBOBJS = 
-MAKEINFO = ${SHELL} /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/missing --run makeinfo
+MAKEINFO = ${SHELL} /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/missing --run makeinfo
 NMEDIT = 
 OBJEXT = o
 PACKAGE = Exchanger
@@ -157,7 +157,7 @@ PACKAGE_TARNAME = Exchanger
 PACKAGE_VERSION = 1.0.1
 PATH_SEPARATOR = :
 PYTHON = /usr/bin/python
-PYTHONPATH = ${prefix}/lib/python2.7/site-packages:${exec_prefix}/lib/python2.7/site-packages
+PYTHONPATH = ${prefix}/lib/python2.7/site-packages:${exec_prefix}/lib/python2.7/site-packages:/home/eunseo/projects/bmi-pyre/Exchanger/lib/python2.7/site-packages:/home/eunseo/projects/bmi-pyre/pythia/lib/python2.7/site-packages:/home/eunseo/projects/snac_bmi/Exchanger/lib/python2.7/site-packages:/home/eunseo/projects/snac_bmi/pythia/lib/python2.7/site-packages:/home/eunseo/projects/snac_bmi/build/Python:
 PYTHON_BLDLIBRARY = -L/usr/lib/python2.7/config-x86_64-linux-gnu -lpython2.7
 PYTHON_EGG_CFLAGS = 
 PYTHON_EGG_CPPFLAGS = 
@@ -186,8 +186,8 @@ SET_MAKE =
 SHELL = /bin/bash
 STRIP = strip
 VERSION = 1.0.1
-ac_ct_CC = mpicc
-ac_ct_CXX = 
+ac_ct_CC = gcc
+ac_ct_CXX = mpicxx
 ac_ct_F77 = gfortran
 am__fastdepCC_FALSE = #
 am__fastdepCC_TRUE = 
@@ -217,7 +217,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = /home/eunseo/projects/snac_bmi/Exchanger-1.0.1/aux-config/install-sh
+install_sh = /home/eunseo/projects/bmi-pyre/Exchanger-1.0.1/aux-config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -228,7 +228,7 @@ oldincludedir = /usr/include
 pdfdir = ${docdir}
 pkgpyexecdir = ${pyexecdir}/Exchanger
 pkgpythondir = ${pythondir}/Exchanger
-prefix = /home/eunseo/projects/snac_bmi/Exchanger
+prefix = /home/eunseo/projects/bmi-pyre/Exchanger
 program_transform_name = s,x,x,
 psdir = ${docdir}
 pyexecdir = ${exec_prefix}/lib/python2.7/site-packages
@@ -812,7 +812,7 @@ install-data: install-data-am
 uninstall: uninstall-am
 
 install-am: all-am
-	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-exec-am install-data-am
 
 installcheck: installcheck-am
 install-strip:
@@ -857,7 +857,7 @@ info-am:
 install-data-am: install-nobase_pythonPYTHON \
 	install-nodist_pythonegginfoPYTHON install-pkgincludeHEADERS
 	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
+	#$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
 install-exec-am: install-libLTLIBRARIES
 
@@ -899,7 +899,7 @@ uninstall-am: uninstall-info-am uninstall-libLTLIBRARIES \
 	distclean-generic distclean-hdr distclean-libtool \
 	distclean-tags distcleancheck distdir distuninstallcheck dvi \
 	dvi-am html html-am info info-am install install-am \
-	install-exec \
+	install-data install-data-am install-data-hook install-exec \
 	install-exec-am install-info install-info-am \
 	install-libLTLIBRARIES install-man install-nobase_pythonPYTHON \
 	install-nodist_pythonegginfoPYTHON install-pkgincludeHEADERS \
