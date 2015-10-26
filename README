@@ -74,6 +74,10 @@ export LD_LIBRARY_PATH=${SNAC_LIBDIR}:{LD_LIBRARY_PATH}
 export PYTHONPATH=${SNAC_MODDIR}:${PYTHONPATH}
 ======================================================
 
+1.3 Test
+- Go to Snac/tests
+- Run: sh ./basic-pyre.sh
+
 2. Build SNAC with Pyre on OS X
 
 Building SNAC with Pyre support on OS X is still experimental but 
