@@ -857,7 +857,7 @@ info-am:
 install-data-am: install-nobase_pythonPYTHON \
 	install-nodist_pythonegginfoPYTHON install-pkgincludeHEADERS
 	@$(NORMAL_INSTALL)
-	$(MAKE) $(AM_MAKEFLAGS) install-data-hook
+	#$(MAKE) $(AM_MAKEFLAGS) install-data-hook
 
 install-exec-am: install-libLTLIBRARIES
 
