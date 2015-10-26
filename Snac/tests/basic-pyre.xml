@@ -14,6 +14,9 @@
 	</list>
 	
 	<struct name="mesh">
+ 		<param name="meshSizeI"> 2 </param>
+ 		<param name="meshSizeJ"> 2 </param>
+ 		<param name="meshSizeK"> 2 </param>
  		<param name="buildNodeNeighbourTbl"> True </param>
 	</struct>
 
