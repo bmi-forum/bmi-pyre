@@ -64,7 +64,7 @@ export PATH=${PYTHIA_BINDIR}:${PATH}
 export LD_LIBRARY_PATH=${PYTHIA_LIBDIR}:${LD_LIBRARY_PATH}
 export PYTHONPATH=${PYTHIA_LIBDIR}/python2.7/site-packages:${PYTHONPATH}
 
-export SNAC_DIR=${HOME}/projects/bmi_pyre/build
+export SNAC_DIR=${HOME}/projects/bmi-pyre/build
 export SNAC_BINDIR=${SNAC_DIR}/bin
 export SNAC_INCDIR=${SNAC_DIR}/include
 export SNAC_LIBDIR=${SNAC_DIR}/lib
@@ -78,7 +78,20 @@ export PYTHONPATH=${SNAC_MODDIR}:${PYTHONPATH}
 - Go to Snac/tests
 - Run: sh ./basic-pyre.sh
 
-2. Build SNAC with Pyre on OS X
+1.4 Build SNAC with Pyre on OS X
 
 Building SNAC with Pyre support on OS X is still experimental but 
 in principle, the steps described above can be followed.
+
+
+2. Running Pyre-SNAC through BMI
+2.1 Check out CSDMS bmi-python from https://github.com/csdms/bmi-python
+2.2 Add bmi-python and bmi-pyre/bmi to PYTHONPATH
+======================================================
+export BMIPYTHON_DIR=${HOME}/projects/bmi-python
+export PYTHONPATH=${BMIPYTHON_DIR}:${PYTHONPATH}
+
+export BMIPYRE_DIR=${HOME}/projects/bmi-pyre/bmi
+export PYTHONPATH=${BMIPYRE_DIR}:${PYTHONPATH}
+======================================================
+2.3 Run bmi-pyre/Snac/tests/basic-bmi-irf.py
