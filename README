@@ -29,7 +29,7 @@ make; make install
   but this source tree contains a modified version that skips pythia installation.
 - configure
 CXXFLAGS="-fPIC -I${PYTHIA_INCDIR}" ./configure --prefix=/Users/eunseo/projects/bmi-pyre/Exchanger
-- make; make install (Note: the local sysconfig.pyc can confuse the install process).
+- make; make install; make install-data (Note: the local sysconfig.pyc can confuse the install process).
 
 1.2 SNAC
 - For installation, see the user manual or INSTALL for quick start.
@@ -56,7 +56,7 @@ export PYTHIA_BINDIR=${PYTHIA_DIR}/bin
 export PATH=${PYTHIA_BINDIR}:${PATH}
 export PYTHONPATH=${PYTHIA_LIBDIR}/python2.7/site-packages:${PYTHONPATH}
 
-export EXCHANGER_DIR=${HOME}/projects/bmi_pyre/Exchanger
+export EXCHANGER_DIR=${HOME}/projects/bmi-pyre/Exchanger
 export EXCHANGER_INCDIR=${EXCHANGER_DIR}/include
 export EXCHANGER_LIBDIR=${EXCHANGER_DIR}/lib
 export EXCHANGER_BINDIR=${EXCHANGER_DIR}/bin
