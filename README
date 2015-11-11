@@ -29,7 +29,7 @@ make; make install
   but this source tree contains a modified version that skips pythia installation.
 - configure
 CXXFLAGS="-fPIC -I${PYTHIA_INCDIR}" ./configure --prefix=/Users/eunseo/projects/bmi-pyre/Exchanger
-- make; make install (Note: the local sysconfig.pyc can confuse the install process).
+- make; make install; make install-data (Note: the local sysconfig.pyc can confuse the install process).
 
 1.2 SNAC
 - For installation, see the user manual or INSTALL for quick start.
@@ -56,7 +56,7 @@ export PYTHIA_BINDIR=${PYTHIA_DIR}/bin
 export PATH=${PYTHIA_BINDIR}:${PATH}
 export PYTHONPATH=${PYTHIA_LIBDIR}/python2.7/site-packages:${PYTHONPATH}
 
-export EXCHANGER_DIR=${HOME}/projects/bmi_pyre/Exchanger
+export EXCHANGER_DIR=${HOME}/projects/bmi-pyre/Exchanger
 export EXCHANGER_INCDIR=${EXCHANGER_DIR}/include
 export EXCHANGER_LIBDIR=${EXCHANGER_DIR}/lib
 export EXCHANGER_BINDIR=${EXCHANGER_DIR}/bin
@@ -64,7 +64,7 @@ export PATH=${PYTHIA_BINDIR}:${PATH}
 export LD_LIBRARY_PATH=${PYTHIA_LIBDIR}:${LD_LIBRARY_PATH}
 export PYTHONPATH=${PYTHIA_LIBDIR}/python2.7/site-packages:${PYTHONPATH}
 
-export SNAC_DIR=${HOME}/projects/bmi_pyre/build
+export SNAC_DIR=${HOME}/projects/bmi-pyre/build
 export SNAC_BINDIR=${SNAC_DIR}/bin
 export SNAC_INCDIR=${SNAC_DIR}/include
 export SNAC_LIBDIR=${SNAC_DIR}/lib
@@ -78,7 +78,36 @@ export PYTHONPATH=${SNAC_MODDIR}:${PYTHONPATH}
 - Go to Snac/tests
 - Run: sh ./basic-pyre.sh
 
-2. Build SNAC with Pyre on OS X
+1.4 Build SNAC with Pyre on OS X
 
 Building SNAC with Pyre support on OS X is still experimental but 
 in principle, the steps described above can be followed.
+
+
+2. Running Pyre-SNAC through BMI
+2.1 Check out CSDMS bmi-python from https://github.com/csdms/bmi-python
+2.2 Add bmi-python and bmi-pyre/bmi to PYTHONPATH
+======================================================
+export BMIPYTHON_DIR=${HOME}/projects/bmi-python
+export PYTHONPATH=${BMIPYTHON_DIR}:${PYTHONPATH}
+
+export BMIPYRE_DIR=${HOME}/projects/bmi-pyre/bmi
+export PYTHONPATH=${BMIPYRE_DIR}:${PYTHONPATH}
+======================================================
+2.3 Run bmi-pyre/Snac/tests/basic-bmi-irf.py
+
+3. Using a Docker image
+All of the above builidng procedures have been executed on Ubuntu 14.04 
+and a public Docker image of the resultant working environment has been created 
+on Docker Hub (https://hub.docker.com/r/eunseochoi/bmi-pyre-snac/)
+
+To use the Docker iamge, do the following:
+- Install Docker (see http://docs.docker.com/). 
+- If on OS X, start a Docker terminal. If on linux, all the docker commands below should be run with sudo.
+- pull the latest image
+docker pull eunseochoi/bmi-pyre-snac:bmi-pyre-snac_built
+- start an interactive container using the image
+docker run -ti eunseochoi/bmi-pyre-snac:bmi-pyre-snac_built
+- become a pre-configured normal user, 'bmiuser'
+# su bmiuser
+- go to the project directory and do the tests (see 1.3 and 2.3 above)
