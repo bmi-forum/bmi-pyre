@@ -109,8 +109,8 @@ docker pull eunseochoi/bmi-pyre-snac:latest
 - start an interactive container using the image
 docker run -ti eunseochoi/bmi-pyre-snac:latest
 - One can mount a host system's directory with -v.
-e.g., docker run -ti -u bmiuser -v /Users/eunseo/.ssh:/home/bmiuser/.ssh eunseochoi/bmi-pyre-snac:latest
+e.g., docker run -ti -v /Users/eunseo/.ssh:/home/bmiuser/.ssh eunseochoi/bmi-pyre-snac:latest
 - become the pre-configured normal user, bmiuser
 # su bmiuser
-- go to the project directory and do the tests (see 1.3 and 2.3 above)
+- go to the project directory and do the tests (see Sec. 1.3 and 2.3 above)
 > cd ~/bmiprojects
