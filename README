@@ -33,7 +33,7 @@ CXXFLAGS="-fPIC -I${PYTHIA_INCDIR}" ./configure --prefix=/Users/eunseo/projects/
 
 1.2 SNAC
 - For installation, see the user manual or INSTALL for quick start.
-Basically, './configure; make'.
+Basically, './configure --options=CHILD; make'.
 
 - Some customization of environment variables might be required 
 prior to configuring and building SNAC with Pyre support.
