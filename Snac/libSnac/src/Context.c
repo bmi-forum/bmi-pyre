@@ -575,6 +575,8 @@ void _Snac_Context_Init( Snac_Context* self ) {
 		"default",
 		Snac_UpdateNodeMomentum_PreProcess,
 		Snac_Context_Type );
+#if HAVE_CHILD
+#else
 	/* Keep the order of appeding the following three functions. */
 	EntryPoint_Append(
 		Context_GetEntryPoint( self, Snac_EP_UpdateNodeMomentum ),
@@ -592,6 +594,7 @@ void _Snac_Context_Init( Snac_Context* self ) {
 		Snac_UpdateNodeMomentum_AdjustEdgeTopo,
 		Snac_Context_Type );
 	/*CCCCC*/
+#endif
 	EntryPoint_Append(
 		Context_GetEntryPoint( self, Snac_EP_LoopElementsMomentum ),
 		"default",
@@ -685,6 +688,12 @@ void _Snac_Context_Delete( void* context ) {
 
 	/* Stg_Class_Delete layouts (were created before "self", so play safe and delete afterwards). */
 	Stg_Class_Delete( meshLayout );
+
+#if HAVE_CHILD
+	/* free CHILD-related arrays */
+	free(self->surfNodes);
+#endif
+
 }
 
 
@@ -978,6 +987,13 @@ void printMaterial_Properties( void* _context, int phaseI )
 void Snac_Context_TimeStepZero( void* context ) {
 	Snac_Context* self = (Snac_Context*)context;
 	Element_LocalIndex	element_lI;
+#if HAVE_CHILD
+	/* for CHILD coupling */
+	Index i,k,node_lI, snode_I;
+	int nx = decomp->nodeLocal3DCounts[self->rank][0];
+	int ny = decomp->nodeLocal3DCounts[self->rank][1];
+	int nz = decomp->nodeLocal3DCounts[self->rank][2];
+#endif
 
 #ifdef DEBUG
 	fprintf(stderr, "TimeStepZero:  restartTimestep=%d,  timeStep=%d\n", self->restartTimestep, self->timeStep);
@@ -1033,6 +1049,20 @@ void Snac_Context_TimeStepZero( void* context ) {
 
 	KeyCall( self, self->syncK, EntryPoint_Class_VoidPtr_CallCast* )( KeyHandle(self,self->syncK), self );
 	/* _Snac_Context_Sync( self ); */
+
+#if HAVE_CHILD
+	/* CHILD coupling: Initialize surfNodes. 
+	   The association is supposed to be permanent throughtout the run. */
+	self->surfNodes = malloc(sizeof(double*)*nx*nz);
+	for(k=0;k<nz;k++) 
+		for(i=0;i<nx;i++) {
+			node_lI=i+(ny-1)*nx+k*nx*ny;
+			snode_I=i+k*nx;
+			self->surfNodes[snode_I] = Snac_NodeCoord_P( self, node_lI );
+			/* fprintf(stderr,"hehe: %d %d (%e %e %e)\n",snode_I,node_lI,((double *)(self->surfNodes[snode_I]))[0], */
+			/* 		((double *)(self->surfNodes[snode_I]))[1],((double *)(self->surfNodes[snode_I]))[2]); */
+		}
+#endif
 }
 
 

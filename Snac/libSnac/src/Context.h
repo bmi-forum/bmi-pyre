@@ -141,7 +141,9 @@
 		/* Should this type by Index? */ \
 		Index				numProcX; \
 		Index				numProcY; \
-		Index				numProcZ; 
+		Index				numProcZ; \
+		/* pointer to the array of surface node coordinates */
+		double***			surfNodes;
 
 
 	struct _Snac_Context { __Snac_Context };
