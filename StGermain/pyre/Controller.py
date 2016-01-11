@@ -112,7 +112,7 @@ class Controller( SimulationController ):
 			# compute an acceptable timestep
 			dt = self.stableTimestep()
 
-			# advance
+			# advance: calls solver.advance()
 			self.advance( dt )
 
 			# update smulation clock and step number

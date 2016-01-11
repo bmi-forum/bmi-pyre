@@ -41,7 +41,7 @@ class BmiPyreSnac(Bmi):
 
         if filename is None:
             d.LoadFromFile( "basic.xml" )
-        elif isinstance(filename, types.StringTypes):
+        elif isinstance( filename, types.StringTypes ):
             
             d.LoadFromFile( filename )
         else:
@@ -56,22 +56,23 @@ class BmiPyreSnac(Bmi):
         """Run model as specified in the input file."""
         self._model.Execute()
 
-    # def update(self):
-    #     """Advance model by one time step."""
-    #     self._model.advance_in_time()
+    def update(self):
+        """Advance model by one time step."""
+        dt = self._model.Dt()
+        self._model.Step( dt )
 
-    # def update_frac(self, time_frac):
-    #     """Update model by a fraction of a time step.
+    def update_frac(self, time_frac):
+        """Update model by a fraction of a time step.
 
-    #     Parameters
-    #     ----------
-    #     time_frac : float
-    #         Fraction fo a time step.
-    #     """
-    #     time_step = self.get_time_step()
-    #     self._model.time_step = time_frac * time_step
-    #     self.update()
-    #     self._model.time_step = time_step
+        Parameters
+        ----------
+        time_frac : float
+            Fraction fo a time step.
+        """
+        time_step = time_frac * self._model.Dt()
+        #self._model.time_step = time_frac * time_step
+        #self.update()
+        self._model.Step( time_step )
 
     # def update_until(self, then):
     #     """Update model until a particular time.
@@ -90,3 +91,61 @@ class BmiPyreSnac(Bmi):
     def finalize(self):
         """Finalize model."""
         self._model.Destroy()
+
+'''
+# API defined in StGermain/Base/Context/Python/Context.py
+
+    def Print( self ):
+        return bindings.Print( self._handle )
+    
+    def Construct( self ):
+        self._handle = bindings.Construct( self._handle )
+        return None
+    
+    def Build( self ):
+        return bindings.Build( self._handle )
+    
+    def Initialise( self ):
+        return bindings.Initialise( self._handle )
+    
+    def Execute( self ):
+        return bindings.Execute( self._handle )
+        
+    def Destroy( self ):
+        return bindings.Destroy( self._handle )
+        
+    def Dt( self ):
+        return bindings.Dt( self._handle )
+    
+    def Step( self, dt ):
+        return bindings.Step( self._handle, dt )
+    
+    def __init__( self, handle ):
+        self._handle = handle
+        self.dictionary = Dictionary.Dictionary( bindings.GetDictionary( self._handle ) )
+        return
+
+    def handle(self):
+        return self._handle
+
+    def Delete( self ):
+        return bindings.Delete( self._handle )
+
+    def SetTime( self, time ):  
+        bindings.SetTime( self._handle, time )
+        self.__time = time
+
+    def GetTime( self ):
+        return self.__time
+
+    time = property( GetTime, SetTime, doc="Current sim. time.")
+    
+    def SetStep( self, timeStep ):
+        bindings.SetTimeStep( self._handle, timeStep )
+        self.__timeStep = timeStep
+
+    def GetStep( self ):    
+        return self.__timeStep
+
+    step = property( GetStep, SetStep, doc="Current sim. step.")
+'''
